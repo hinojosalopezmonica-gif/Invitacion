@@ -129,7 +129,7 @@ window.INVITADOS = {
   },
   "033": {
     "nombre": "Faviola Hinojosa",
-    "lugares": 1
+    "lugares": 3
   },
   "034": {
     "nombre": "Juan Hinojosa",
