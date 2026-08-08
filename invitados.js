@@ -73,7 +73,7 @@ window.INVITADOS = {
   },
   "019": {
     "nombre": "Otto Avalos",
-    "lugares": 2
+    "lugares": 3
   },
   "020": {
     "nombre": "Alberto Mascareño",
