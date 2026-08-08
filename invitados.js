@@ -20,7 +20,7 @@ window.INVITADOS = {
     "lugares": 2
   },
   "006": {
-    "nombre": "Regina y Diana",
+    "nombre": "Tí Gina y Diana",
     "lugares": 2
   },
   "007": {
@@ -32,7 +32,7 @@ window.INVITADOS = {
     "lugares": 2
   },
   "009": {
-    "nombre": "Lourdes Valenzuela",
+    "nombre": "Tía Lourdes",
     "lugares": 1
   },
   "010": {
@@ -64,11 +64,11 @@ window.INVITADOS = {
     "lugares": 1
   },
   "017": {
-    "nombre": "Heriberto Avalos",
+    "nombre": "Heriberto y Carmen",
     "lugares": 2
   },
   "018": {
-    "nombre": "Yahir Avalos",
+    "nombre": "Yahir y Patricia",
     "lugares": 2
   },
   "019": {
@@ -88,7 +88,7 @@ window.INVITADOS = {
     "lugares": 3
   },
   "023": {
-    "nombre": "Javier Nevarez",
+    "nombre": "Chato y Abril",
     "lugares": 2
   },
   "024": {
@@ -129,7 +129,7 @@ window.INVITADOS = {
   },
   "033": {
     "nombre": "Faviola Hinojosa",
-    "lugares": 3
+    "lugares": 2
   },
   "034": {
     "nombre": "Juan Hinojosa",
@@ -172,7 +172,7 @@ window.INVITADOS = {
     "lugares": 2
   },
   "044": {
-    "nombre": "Mauricio Hinojosa",
+    "nombre": "Mauricio Hinojosa S",
     "lugares": 2
   },
   "045": {
@@ -204,11 +204,11 @@ window.INVITADOS = {
     "lugares": 1
   },
   "052": {
-    "nombre": "Javier López",
+    "nombre": "Javier y Dinora",
     "lugares": 2
   },
   "053": {
-    "nombre": "Andrea López",
+    "nombre": "Andrea y José",
     "lugares": 2
   },
   "054": {
@@ -252,7 +252,7 @@ window.INVITADOS = {
     "lugares": 2
   },
   "064": {
-    "nombre": "Ávalos Hinojosa",
+    "nombre": "Ixtli e Isaac",
     "lugares": 2
   }
 };
