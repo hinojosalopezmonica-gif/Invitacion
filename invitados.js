@@ -12,7 +12,7 @@ window.INVITADOS = {
     "lugares": 2
   },
   "004": {
-    "nombre": "Familia Cervantes Gonzalez",
+    "nombre": "Suegros",
     "lugares": 2
   },
   "005": {
