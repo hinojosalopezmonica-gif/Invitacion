@@ -69,7 +69,7 @@ window.INVITADOS = {
   },
   "018": {
     "nombre": "Yahir y Patricia",
-    "lugares": 2
+    "lugares": 3
   },
   "019": {
     "nombre": "Otto Avalos",
