@@ -120,15 +120,15 @@ window.INVITADOS = {
     "lugares": 2
   },
   "031": {
-    "nombre": "Mónica López",
+    "nombre": "Mónica y Joel",
     "lugares": 2
   },
   "032": {
-    "nombre": "Juan Hinojosa Botello",
+    "nombre": "Juan y Daniela",
     "lugares": 3
   },
   "033": {
-    "nombre": "Faviola Hinojosa",
+    "nombre": "Faviola y Dalton",
     "lugares": 2
   },
   "034": {
@@ -136,43 +136,43 @@ window.INVITADOS = {
     "lugares": 2
   },
   "035": {
-    "nombre": "Julia Hinojosa",
+    "nombre": "Familia Hinojosa Botello",
     "lugares": 4
   },
   "036": {
-    "nombre": "Maria Elena Hinojosa",
+    "nombre": "Nena Hinojosa",
     "lugares": 2
   },
   "037": {
-    "nombre": "Lizbeth Hinojosa",
+    "nombre": "Liz y Gilberto",
     "lugares": 2
   },
   "038": {
-    "nombre": "Marlen Hinojosa",
+    "nombre": "Marlen y Sergio",
     "lugares": 2
   },
   "039": {
-    "nombre": "Erica Hinojosa",
+    "nombre": "Familia Espinoza Hinojosa",
     "lugares": 5
   },
   "040": {
-    "nombre": "Mauricio Hinojosa",
+    "nombre": "Mauricio y Luz",
     "lugares": 2
   },
   "041": {
-    "nombre": "Guadalupe Hinojosa",
+    "nombre": "Guadalupe y Karla",
     "lugares": 3
   },
   "042": {
-    "nombre": "Francisco Sanchez",
+    "nombre": "Francisco",
     "lugares": 2
   },
   "043": {
-    "nombre": "Carlos Hinojosa",
+    "nombre": "Carlos",
     "lugares": 2
   },
   "044": {
-    "nombre": "Mauricio Hinojosa S",
+    "nombre": "Mauricio",
     "lugares": 2
   },
   "045": {
@@ -248,7 +248,7 @@ window.INVITADOS = {
     "lugares": 2
   },
   "063": {
-    "nombre": "Angélica Luna",
+    "nombre": "Angélica Aguilar",
     "lugares": 2
   },
   "064": {
