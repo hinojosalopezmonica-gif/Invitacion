@@ -20,7 +20,7 @@ window.INVITADOS = {
     "lugares": 2
   },
   "006": {
-    "nombre": "Tí Gina y Diana",
+    "nombre": "Tía Gina y Diana",
     "lugares": 2
   },
   "007": {
