@@ -1,6 +1,6 @@
 window.INVITADOS = {
   "001": {
-    "nombre": "Beatriz Avalos",
+    "nombre": "Beatriz y Meche",
     "lugares": 2
   },
   "002": {
