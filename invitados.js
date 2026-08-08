@@ -108,7 +108,7 @@ window.INVITADOS = {
     "lugares": 1
   },
   "028": {
-    "nombre": "Omar Avalos Lomelí",
+    "nombre": "Omar Y Bianca",
     "lugares": 2
   },
   "029": {
