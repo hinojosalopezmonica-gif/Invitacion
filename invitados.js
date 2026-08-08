@@ -21,7 +21,7 @@ window.INVITADOS = {
   },
   "006": {
     "nombre": "Regina y Diana",
-    "lugares": 3
+    "lugares": 2
   },
   "007": {
     "nombre": "Abraham Sanchez",
