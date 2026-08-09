@@ -39,30 +39,12 @@ if (invitado) {
   }
 
   if (reserved) {
-    reserved.innerHTML = `Esta invitación ha sido reservada para <strong>${invitado.lugares} ${invitado.lugares === 1 ? "persona" : "personas"}</strong>.`;
+    reserved.innerHTML =
+      `Esta invitación ha sido reservada para <strong>${invitado.lugares} ${
+        invitado.lugares === 1 ? "persona" : "personas"
+      }</strong>.`;
   }
 } else {
-  if (greeting) {
-    greeting.textContent = "Confirmación de asistencia";
-  }
-
-  if (reserved) {
-    reserved.textContent = "Abre el enlace personalizado que recibiste para confirmar tu asistencia.";
-  }
-
-  if (form) {
-    const submitButton = form.querySelector('button[type="submit"]');
-
-    if (submitButton) {
-      submitButton.disabled = true;
-    }
-  }
-
-  if (note) {
-    note.textContent = "No se encontró un código de invitación válido.";
-  }
-}
-
   if (greeting) {
     greeting.textContent = "Confirmación de asistencia";
   }
@@ -95,11 +77,9 @@ const rsvpDeadline =
   new Date("2026-09-21T00:00:00-07:00");
 
 function checkRsvpDeadline() {
-
   const now = new Date();
 
   if (now >= rsvpDeadline) {
-
     if (form) {
       form.hidden = true;
     }
@@ -122,22 +102,17 @@ checkRsvpDeadline();
 // ======================================================
 
 async function verificarRespuestaPrevia() {
-
   if (!invitado) return;
-
   if (!window.CONFIG?.appsScriptUrl) return;
 
   try {
-
     const url =
-      ${window.CONFIG.appsScriptUrl}?codigo=${encodeURIComponent(codigo)};
+      `${window.CONFIG.appsScriptUrl}?codigo=${encodeURIComponent(codigo)}`;
 
     const respuesta = await fetch(url);
-
     const datos = await respuesta.json();
 
     if (datos.yaRespondio) {
-
       if (form) {
         form.hidden = true;
       }
@@ -148,7 +123,6 @@ async function verificarRespuestaPrevia() {
     }
 
   } catch (error) {
-
     console.warn(
       "No fue posible verificar el RSVP previo.",
       error
@@ -168,9 +142,7 @@ if (!checkRsvpDeadline()) {
 // ======================================================
 
 if (form) {
-
   form.addEventListener("submit", async (event) => {
-
     event.preventDefault();
 
     if (checkRsvpDeadline()) {
@@ -193,66 +165,48 @@ if (form) {
     }
 
     const data = {
-
       codigo,
-
       invitado: invitado.nombre,
-
       lugares: invitado.lugares,
-
       asistencia,
-
       mensaje:
         document
           .getElementById("mensaje")
           ?.value
           .trim() || "",
-
       fecha: new Date().toISOString()
     };
-
 
     const button =
       form.querySelector('button[type="submit"]');
 
     if (button) {
-
       button.disabled = true;
-
-      button.textContent =
-        "Enviando…";
+      button.textContent = "Enviando…";
     }
 
     if (note) {
       note.textContent = "";
     }
 
-
     try {
-
       if (window.CONFIG?.appsScriptUrl) {
-
         await fetch(
           window.CONFIG.appsScriptUrl,
           {
             method: "POST",
-
             mode: "no-cors",
-
             headers: {
               "Content-Type":
                 "text/plain;charset=utf-8"
             },
-
-            body:
-              JSON.stringify(data)
+            body: JSON.stringify(data)
           }
         );
 
       } else {
-
         localStorage.setItem(
-          rsvp-${codigo},
+          `rsvp-${codigo}`,
           JSON.stringify(data)
         );
 
@@ -261,7 +215,6 @@ if (form) {
           data
         );
       }
-
 
       form.hidden = true;
 
@@ -280,25 +233,20 @@ if (form) {
       }
 
       if (success) {
-
         success.scrollIntoView({
           behavior: "smooth",
           block: "center"
         });
       }
 
-
     } catch (error) {
-
       if (note) {
         note.textContent =
           "No fue posible enviar la confirmación. Inténtalo nuevamente.";
       }
 
       if (button) {
-
         button.disabled = false;
-
         button.textContent =
           "Confirmar asistencia";
       }
@@ -315,11 +263,9 @@ const backToInvitation =
   document.getElementById("backToInvitation");
 
 if (backToInvitation) {
-
   backToInvitation.addEventListener(
     "click",
     () => {
-
       document
         .getElementById("evento")
         ?.scrollIntoView({
@@ -338,11 +284,8 @@ const weddingDate =
   new Date("2026-10-09T18:15:00-07:00");
 
 function updateCountdown() {
-
   const now = new Date();
-
-  const diff =
-    weddingDate - now;
+  const diff = weddingDate - now;
 
   const countdown =
     document.getElementById("countdown");
@@ -352,9 +295,7 @@ function updateCountdown() {
       "weddingDayMessage"
     );
 
-
   if (diff <= 0) {
-
     if (countdown) {
       countdown.hidden = true;
     }
@@ -366,30 +307,23 @@ function updateCountdown() {
     return;
   }
 
-
   const days =
-    Math.floor(
-      diff / 86400000
-    );
+    Math.floor(diff / 86400000);
 
   const hours =
     Math.floor(
-      (diff % 86400000) /
-      3600000
+      (diff % 86400000) / 3600000
     );
 
   const minutes =
     Math.floor(
-      (diff % 3600000) /
-      60000
+      (diff % 3600000) / 60000
     );
 
   const seconds =
     Math.floor(
-      (diff % 60000) /
-      1000
+      (diff % 60000) / 1000
     );
-
 
   const daysElement =
     document.getElementById("days");
@@ -402,7 +336,6 @@ function updateCountdown() {
 
   const secondsElement =
     document.getElementById("seconds");
-
 
   if (daysElement) {
     daysElement.textContent =
@@ -440,14 +373,9 @@ setInterval(
 const observer =
   new IntersectionObserver(
     entries => {
-
       entries.forEach(
         entry => {
-
-          if (
-            entry.isIntersecting
-          ) {
-
+          if (entry.isIntersecting) {
             entry.target
               .classList
               .add("visible");
@@ -459,7 +387,6 @@ const observer =
       threshold: 0.12
     }
   );
-
 
 document
   .querySelectorAll(".reveal")
@@ -483,9 +410,7 @@ const backTop =
     "backTop"
   );
 
-
 function updateScrollUI() {
-
   const max =
     document.documentElement
       .scrollHeight -
@@ -493,29 +418,22 @@ function updateScrollUI() {
 
   const pct =
     max > 0
-      ? (window.scrollY / max) *
-        100
+      ? (window.scrollY / max) * 100
       : 0;
 
-
   if (progressBar) {
-
     progressBar.style.width =
-      ${Math.min(100, pct)}%;
+      `${Math.min(100, pct)}%`;
   }
 
-
   if (backTop) {
-
     backTop.classList.toggle(
       "visible",
       window.scrollY >
-        window.innerHeight *
-          0.75
+        window.innerHeight * 0.75
     );
   }
 }
-
 
 window.addEventListener(
   "scroll",
@@ -527,13 +445,10 @@ window.addEventListener(
 
 updateScrollUI();
 
-
 if (backTop) {
-
   backTop.addEventListener(
     "click",
     () => {
-
       document
         .getElementById("portada")
         ?.scrollIntoView({
