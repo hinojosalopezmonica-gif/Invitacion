@@ -247,20 +247,19 @@ window.INVITADOS = {
     "nombre": "Berenice Martinez",
     "lugares": 2
   },
-  "063": {
+"063": {
     "nombre": "Angélica Aguilar",
     "lugares": 2
   },
   "064": {
     "nombre": "Ixtli e Isaac",
     "lugares": 2
-      },
+  },
   "065": {
     "nombre": "Beatriz y Efraín",
     "lugares": 2
-      },
+  },
   "066": {
     "nombre": "Elizabeth",
     "lugares": 1
   }
-};
