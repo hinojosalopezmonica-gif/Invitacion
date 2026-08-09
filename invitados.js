@@ -263,3 +263,4 @@ window.INVITADOS = {
     "nombre": "Elizabeth",
     "lugares": 1
   }
+};    
