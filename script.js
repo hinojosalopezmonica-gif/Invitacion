@@ -36,7 +36,7 @@ const notAttendingMessage = document.getElementById("notAttendingMessage");
 if (invitado) {
 
   if (greeting) {
-    greeting.textContent = `Hola, ${invitado.nombre}`;
+    greeting.textContent = Hola, ${invitado.nombre};
   }
 
   if (reserved) {
