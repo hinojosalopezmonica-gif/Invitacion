@@ -1,43 +1,93 @@
 const params = new URLSearchParams(location.search);
-const codigo = (params.get("codigo") || params.get("c") || "").padStart(3,"0");
+const codigo = (params.get("codigo") || params.get("c") || "").padStart(3, "0");
 const invitado = window.INVITADOS?.[codigo];
 
 const mapsButton = document.getElementById("mapsButton");
-if (mapsButton) mapsButton.href = window.CONFIG.mapsUrl;
+if (mapsButton) {
+  mapsButton.href = window.CONFIG.mapsUrl;
+}
 
 const openInvitation = document.getElementById("openInvitation");
-openInvitation.addEventListener("click", () => {
-  document.getElementById("bienvenida").scrollIntoView({behavior:"smooth"});
-});
+if (openInvitation) {
+  openInvitation.addEventListener("click", () => {
+    document.getElementById("bienvenida")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+}
 
 const greeting = document.getElementById("guestGreeting");
 const reserved = document.getElementById("reservedText");
 const form = document.getElementById("rsvpForm");
 const alreadyRespondedMessage =
   document.getElementById("alreadyRespondedMessage");
-const rsvpClosedMessage = document.getElementById("rsvpClosedMessage");
+const rsvpClosedMessage =
+  document.getElementById("rsvpClosedMessage");
 const note = document.getElementById("formNote");
 const success = document.getElementById("successMessage");
 const attendingMessage = document.getElementById("attendingMessage");
 const notAttendingMessage = document.getElementById("notAttendingMessage");
 
+
+// ======================================================
+// MOSTRAR INVITADO
+// ======================================================
+
 if (invitado) {
-  greeting.textContent = `Hola, ${invitado.nombre}`;
-  reserved.innerHTML = `Esta invitación ha sido reservada para <strong>${invitado.lugares} ${invitado.lugares === 1 ? "persona" : "personas"}</strong>.`;
+
+  if (greeting) {
+    greeting.textContent = Hola, ${invitado.nombre};
+  }
+
+  if (reserved) {
+    reserved.innerHTML =
+      `Esta invitación ha sido reservada para <strong>${invitado.lugares} ${
+        invitado.lugares === 1 ? "persona" : "personas"
+      }</strong>.`;
+  }
+
 } else {
-  greeting.textContent = "Confirmación de asistencia";
-  reserved.textContent = "Abre el enlace personalizado que recibiste para confirmar tu asistencia.";
-  form.querySelector('button[type="submit"]').disabled = true;
-  note.textContent = "No se encontró un código de invitación válido.";
+
+  if (greeting) {
+    greeting.textContent = "Confirmación de asistencia";
+  }
+
+  if (reserved) {
+    reserved.textContent =
+      "Abre el enlace personalizado que recibiste para confirmar tu asistencia.";
+  }
+
+  if (form) {
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+  }
+
+  if (note) {
+    note.textContent =
+      "No se encontró un código de invitación válido.";
+  }
 }
 
-const rsvpDeadline = new Date("2026-09-21T00:00:00-07:00");
+
+// ======================================================
+// FECHA LÍMITE DE CONFIRMACIÓN
+// ======================================================
+
+const rsvpDeadline =
+  new Date("2026-09-21T00:00:00-07:00");
 
 function checkRsvpDeadline() {
+
   const now = new Date();
 
   if (now >= rsvpDeadline) {
-    form.hidden = true;
+
+    if (form) {
+      form.hidden = true;
+    }
 
     if (rsvpClosedMessage) {
       rsvpClosedMessage.hidden = false;
@@ -50,19 +100,32 @@ function checkRsvpDeadline() {
 }
 
 checkRsvpDeadline();
-form.addEventListener("submit", async (event) => {
-  async function verificarRespuestaPrevia() {
-  if (!invitado || !window.CONFIG.appsScriptUrl) return;
+
+
+// ======================================================
+// VERIFICAR SI EL CÓDIGO YA RESPONDIÓ
+// ======================================================
+
+async function verificarRespuestaPrevia() {
+
+  if (!invitado) return;
+
+  if (!window.CONFIG?.appsScriptUrl) return;
 
   try {
+
     const url =
       ${window.CONFIG.appsScriptUrl}?codigo=${encodeURIComponent(codigo)};
 
     const respuesta = await fetch(url);
+
     const datos = await respuesta.json();
 
     if (datos.yaRespondio) {
-      form.hidden = true;
+
+      if (form) {
+        form.hidden = true;
+      }
 
       if (alreadyRespondedMessage) {
         alreadyRespondedMessage.hidden = false;
@@ -70,101 +133,397 @@ form.addEventListener("submit", async (event) => {
     }
 
   } catch (error) {
-    console.warn("No fue posible verificar el RSVP previo.", error);
+
+    console.warn(
+      "No fue posible verificar el RSVP previo.",
+      error
+    );
   }
 }
 
-verificarRespuestaPrevia();
-  event.preventDefault();
 
-if (checkRsvpDeadline()) {
-  return;
+// Ejecutar al abrir la invitación
+if (!checkRsvpDeadline()) {
+  verificarRespuestaPrevia();
 }
 
-if (!invitado) return;
 
-  const asistencia = new FormData(form).get("asistencia");
-  const data = {
-    codigo,
-    invitado: invitado.nombre,
-    lugares: invitado.lugares,
-    asistencia,
-    mensaje: document.getElementById("mensaje").value.trim(),
-    fecha: new Date().toISOString()
-  };
+// ======================================================
+// ENVÍO DE CONFIRMACIÓN
+// ======================================================
 
-  const button = form.querySelector('button[type="submit"]');
-  button.disabled = true;
-  button.textContent = "Enviando…";
-  note.textContent = "";
+if (form) {
 
-  try {
-    if (window.CONFIG.appsScriptUrl) {
-      await fetch(window.CONFIG.appsScriptUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {"Content-Type":"text/plain;charset=utf-8"},
-        body: JSON.stringify(data)
-      });
-    } else {
-      localStorage.setItem(`rsvp-${codigo}`, JSON.stringify(data));
-      console.info("Modo de prueba: respuesta guardada localmente.", data);
+  form.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    if (checkRsvpDeadline()) {
+      return;
     }
 
-    form.hidden = true;
-    success.hidden = false;
-    attendingMessage.hidden = asistencia !== "Sí";
-    notAttendingMessage.hidden = asistencia !== "No";
-    success.scrollIntoView({behavior:"smooth", block:"center"});
-  } catch (error) {
-    note.textContent = "No fue posible enviar la confirmación. Inténtalo nuevamente.";
-    button.disabled = false;
-    button.textContent = "Confirmar asistencia";
-  }
-});
+    if (!invitado) {
+      return;
+    }
 
-document.getElementById("backToInvitation").addEventListener("click", () => {
-  document.getElementById("evento").scrollIntoView({behavior:"smooth"});
-});
+    const asistencia =
+      new FormData(form).get("asistencia");
 
-const weddingDate = new Date("2026-10-09T18:15:00-07:00");
-function updateCountdown(){
+    if (!asistencia) {
+      if (note) {
+        note.textContent =
+          "Selecciona si asistirás o no.";
+      }
+      return;
+    }
+
+    const data = {
+
+      codigo,
+
+      invitado: invitado.nombre,
+
+      lugares: invitado.lugares,
+
+      asistencia,
+
+      mensaje:
+        document
+          .getElementById("mensaje")
+          ?.value
+          .trim() || "",
+
+      fecha: new Date().toISOString()
+    };
+
+
+    const button =
+      form.querySelector('button[type="submit"]');
+
+    if (button) {
+
+      button.disabled = true;
+
+      button.textContent =
+        "Enviando…";
+    }
+
+    if (note) {
+      note.textContent = "";
+    }
+
+
+    try {
+
+      if (window.CONFIG?.appsScriptUrl) {
+
+        await fetch(
+          window.CONFIG.appsScriptUrl,
+          {
+            method: "POST",
+
+            mode: "no-cors",
+
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+            body:
+              JSON.stringify(data)
+          }
+        );
+
+      } else {
+
+        localStorage.setItem(
+          rsvp-${codigo},
+          JSON.stringify(data)
+        );
+
+        console.info(
+          "Modo de prueba: respuesta guardada localmente.",
+          data
+        );
+      }
+
+
+      form.hidden = true;
+
+      if (success) {
+        success.hidden = false;
+      }
+
+      if (attendingMessage) {
+        attendingMessage.hidden =
+          asistencia !== "Sí";
+      }
+
+      if (notAttendingMessage) {
+        notAttendingMessage.hidden =
+          asistencia !== "No";
+      }
+
+      if (success) {
+
+        success.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+
+
+    } catch (error) {
+
+      if (note) {
+        note.textContent =
+          "No fue posible enviar la confirmación. Inténtalo nuevamente.";
+      }
+
+      if (button) {
+
+        button.disabled = false;
+
+        button.textContent =
+          "Confirmar asistencia";
+      }
+    }
+  });
+}
+
+
+// ======================================================
+// VOLVER A LA INVITACIÓN
+// ======================================================
+
+const backToInvitation =
+  document.getElementById("backToInvitation");
+
+if (backToInvitation) {
+
+  backToInvitation.addEventListener(
+    "click",
+    () => {
+
+      document
+        .getElementById("evento")
+        ?.scrollIntoView({
+          behavior: "smooth"
+        });
+    }
+  );
+}
+
+
+// ======================================================
+// CUENTA REGRESIVA
+// ======================================================
+
+const weddingDate =
+  new Date("2026-10-09T18:15:00-07:00");
+
+function updateCountdown() {
+
   const now = new Date();
-  const diff = weddingDate - now;
-  const countdown = document.getElementById("countdown");
-  const message = document.getElementById("weddingDayMessage");
+
+  const diff =
+    weddingDate - now;
+
+  const countdown =
+    document.getElementById("countdown");
+
+  const message =
+    document.getElementById(
+      "weddingDayMessage"
+    );
+
 
   if (diff <= 0) {
-    countdown.hidden = true;
-    message.hidden = false;
+
+    if (countdown) {
+      countdown.hidden = true;
+    }
+
+    if (message) {
+      message.hidden = false;
+    }
+
     return;
   }
 
-  const days = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  const minutes = Math.floor((diff % 3600000) / 60000);
-  const seconds = Math.floor((diff % 60000) / 1000);
-  document.getElementById("days").textContent = String(days).padStart(2,"0");
-  document.getElementById("hours").textContent = String(hours).padStart(2,"0");
-  document.getElementById("minutes").textContent = String(minutes).padStart(2,"0");
-  document.getElementById("seconds").textContent = String(seconds).padStart(2,"0");
+
+  const days =
+    Math.floor(
+      diff / 86400000
+    );
+
+  const hours =
+    Math.floor(
+      (diff % 86400000) /
+      3600000
+    );
+
+  const minutes =
+    Math.floor(
+      (diff % 3600000) /
+      60000
+    );
+
+  const seconds =
+    Math.floor(
+      (diff % 60000) /
+      1000
+    );
+
+
+  const daysElement =
+    document.getElementById("days");
+
+  const hoursElement =
+    document.getElementById("hours");
+
+  const minutesElement =
+    document.getElementById("minutes");
+
+  const secondsElement =
+    document.getElementById("seconds");
+
+
+  if (daysElement) {
+    daysElement.textContent =
+      String(days).padStart(2, "0");
+  }
+
+  if (hoursElement) {
+    hoursElement.textContent =
+      String(hours).padStart(2, "0");
+  }
+
+  if (minutesElement) {
+    minutesElement.textContent =
+      String(minutes).padStart(2, "0");
+  }
+
+  if (secondsElement) {
+    secondsElement.textContent =
+      String(seconds).padStart(2, "0");
+  }
 }
+
 updateCountdown();
-setInterval(updateCountdown, 1000);
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add("visible"); });
-},{threshold:.12});
-document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+setInterval(
+  updateCountdown,
+  1000
+);
 
-const progressBar = document.getElementById("progressBar");
-const backTop = document.getElementById("backTop");
-function updateScrollUI(){
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-  progressBar.style.width = `${Math.min(100, pct)}%`;
-  backTop.classList.toggle("visible", window.scrollY > window.innerHeight * 0.75);
+
+// ======================================================
+// ANIMACIONES
+// ======================================================
+
+const observer =
+  new IntersectionObserver(
+    entries => {
+
+      entries.forEach(
+        entry => {
+
+          if (
+            entry.isIntersecting
+          ) {
+
+            entry.target
+              .classList
+              .add("visible");
+          }
+        }
+      );
+    },
+    {
+      threshold: 0.12
+    }
+  );
+
+
+document
+  .querySelectorAll(".reveal")
+  .forEach(
+    element =>
+      observer.observe(element)
+  );
+
+
+// ======================================================
+// BARRA DE PROGRESO Y VOLVER ARRIBA
+// ======================================================
+
+const progressBar =
+  document.getElementById(
+    "progressBar"
+  );
+
+const backTop =
+  document.getElementById(
+    "backTop"
+  );
+
+
+function updateScrollUI() {
+
+  const max =
+    document.documentElement
+      .scrollHeight -
+    window.innerHeight;
+
+  const pct =
+    max > 0
+      ? (window.scrollY / max) *
+        100
+      : 0;
+
+
+  if (progressBar) {
+
+    progressBar.style.width =
+      ${Math.min(100, pct)}%;
+  }
+
+
+  if (backTop) {
+
+    backTop.classList.toggle(
+      "visible",
+      window.scrollY >
+        window.innerHeight *
+          0.75
+    );
+  }
 }
-window.addEventListener("scroll", updateScrollUI, {passive:true});
+
+
+window.addEventListener(
+  "scroll",
+  updateScrollUI,
+  {
+    passive: true
+  }
+);
+
 updateScrollUI();
-backTop.addEventListener("click", () => document.getElementById("portada").scrollIntoView({behavior:"smooth"}));
+
+
+if (backTop) {
+
+  backTop.addEventListener(
+    "click",
+    () => {
+
+      document
+        .getElementById("portada")
+        ?.scrollIntoView({
+          behavior: "smooth"
+        });
+    }
+  );
+}
