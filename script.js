@@ -34,19 +34,34 @@ const notAttendingMessage = document.getElementById("notAttendingMessage");
 // ======================================================
 
 if (invitado) {
-
   if (greeting) {
-    greeting.textContent = Hola, ${invitado.nombre};
+    greeting.textContent = `Hola, ${invitado.nombre}`;
   }
 
   if (reserved) {
-    reserved.innerHTML =
-      `Esta invitación ha sido reservada para <strong>${invitado.lugares} ${
-        invitado.lugares === 1 ? "persona" : "personas"
-      }</strong>.`;
+    reserved.innerHTML = `Esta invitación ha sido reservada para <strong>${invitado.lugares} ${invitado.lugares === 1 ? "persona" : "personas"}</strong>.`;
+  }
+} else {
+  if (greeting) {
+    greeting.textContent = "Confirmación de asistencia";
   }
 
-} else {
+  if (reserved) {
+    reserved.textContent = "Abre el enlace personalizado que recibiste para confirmar tu asistencia.";
+  }
+
+  if (form) {
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+  }
+
+  if (note) {
+    note.textContent = "No se encontró un código de invitación válido.";
+  }
+}
 
   if (greeting) {
     greeting.textContent = "Confirmación de asistencia";
