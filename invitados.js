@@ -254,5 +254,17 @@ window.INVITADOS = {
   "064": {
     "nombre": "Ixtli e Isaac",
     "lugares": 2
+  },
+  "065": {
+    "nombre": "Beatriz y Efraín",
+    "lugares": 2  
+   },
+  "066": {
+    "nombre": "Elizabeth",
+    "lugares": 1
+    },
+  "067": {
+    "nombre": "PRUEBA NOVIOS",
+    "lugares": 2   
   }
 };
