@@ -13,6 +13,7 @@ openInvitation.addEventListener("click", () => {
 const greeting = document.getElementById("guestGreeting");
 const reserved = document.getElementById("reservedText");
 const form = document.getElementById("rsvpForm");
+const rsvpClosedMessage = document.getElementById("rsvpClosedMessage");
 const note = document.getElementById("formNote");
 const success = document.getElementById("successMessage");
 const attendingMessage = document.getElementById("attendingMessage");
@@ -28,9 +29,33 @@ if (invitado) {
   note.textContent = "No se encontró un código de invitación válido.";
 }
 
+const rsvpDeadline = new Date("2026-09-21T00:00:00-07:00");
+
+function checkRsvpDeadline() {
+  const now = new Date();
+
+  if (now >= rsvpDeadline) {
+    form.hidden = true;
+
+    if (rsvpClosedMessage) {
+      rsvpClosedMessage.hidden = false;
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+checkRsvpDeadline();
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!invitado) return;
+
+if (checkRsvpDeadline()) {
+  return;
+}
+
+if (!invitado) return;
 
   const asistencia = new FormData(form).get("asistencia");
   const data = {
