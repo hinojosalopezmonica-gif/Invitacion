@@ -13,6 +13,8 @@ openInvitation.addEventListener("click", () => {
 const greeting = document.getElementById("guestGreeting");
 const reserved = document.getElementById("reservedText");
 const form = document.getElementById("rsvpForm");
+const alreadyRespondedMessage =
+  document.getElementById("alreadyRespondedMessage");
 const rsvpClosedMessage = document.getElementById("rsvpClosedMessage");
 const note = document.getElementById("formNote");
 const success = document.getElementById("successMessage");
@@ -49,6 +51,30 @@ function checkRsvpDeadline() {
 
 checkRsvpDeadline();
 form.addEventListener("submit", async (event) => {
+  async function verificarRespuestaPrevia() {
+  if (!invitado || !window.CONFIG.appsScriptUrl) return;
+
+  try {
+    const url =
+      ${window.CONFIG.appsScriptUrl}?codigo=${encodeURIComponent(codigo)};
+
+    const respuesta = await fetch(url);
+    const datos = await respuesta.json();
+
+    if (datos.yaRespondio) {
+      form.hidden = true;
+
+      if (alreadyRespondedMessage) {
+        alreadyRespondedMessage.hidden = false;
+      }
+    }
+
+  } catch (error) {
+    console.warn("No fue posible verificar el RSVP previo.", error);
+  }
+}
+
+verificarRespuestaPrevia();
   event.preventDefault();
 
 if (checkRsvpDeadline()) {
