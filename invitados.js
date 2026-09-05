@@ -61,7 +61,7 @@ window.INVITADOS = {
   },
   "016": {
     "nombre": "Guillermo Avalos",
-    "lugares": 1
+    "lugares": 2
   },
   "017": {
     "nombre": "Heriberto y Carmen",
